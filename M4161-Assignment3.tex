@@ -1,0 +1,91 @@
+\documentclass[11pt]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts, amssymb, amsmath, amsthm, booktabs, hyperref, pgfplots, tikz, xcolor}
+
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{definition}\newtheorem{question}{Question}
+\theoremstyle{definition}\newtheorem*{solution}{Solution}
+
+\date{January 9, 2024}
+
+\setlength{\parskip}{5pt}
+
+\begin{document}
+
+\noindent \textbf{MATH 4161 Mathematics of Cryptography} \hfill \textbf{Assignment 3} \\
+\noindent \textsc{Lecture} \hfill \textsc{Joe Tran}
+
+\begin{question}
+    Given the ciphertext \textsf{EEAIR GGITS GYUEE TDNUW NOAOY RIAAT RHWGR NDVLP CITHN ITAOF KSGIO EATTD OELLB FHTDN AI}, and the length of the keyword is 6, use rectangular transposition to find the plaintext and the key. The plaintext contains the word \textsf{plastic}.
+\end{question}
+
+\begin{solution}
+    Because the length of the ciphertext is 72, and the length of the keyword is 6, then
+    \begin{equation*}
+        k = \frac{\text{length of ciphertext}}{\text{length of keyword}} = \frac{72}{6} = 12
+    \end{equation*}
+    So we make the ciphertext into 12-grams.
+    \begin{center}
+        \textsf{EEAIRGGITSGY UEETDNUWNOAO YRIAATRHWGRN DVLPCITHNITA OFKSGIOEATTD OELLBFHTDNAI}
+    \end{center}
+    So we have the rectangle given as follows:
+    \begin{equation*}
+        \begin{bmatrix}
+            E & U & Y & D & O & O \\
+            E & E & R & V & F & E \\
+            A & E & I & L & K & L \\
+            I & T & A & P & S & L \\
+            R & D & A & C & G & B \\
+            G & N & T & I & I & F \\
+            G & U & R & T & O & H \\
+            I & W & H & H & E & T \\
+            T & N & W & N & A & D \\
+            S & O & G & I & T & N \\
+            G & A & R & T & T & A \\
+            Y & O & N & A & D & I \\
+        \end{bmatrix}
+    \end{equation*}
+    Because the plaintext contains the word plastic, then we need to rearrange the columns until the word plastic appears.
+    \begin{equation*}
+        \begin{bmatrix}
+            E & U & Y & D & O & O \\
+            E & E & R & V & F & E \\
+            A & E & I & L & K & L \\
+            I & T & A & P & S & L \\
+            R & D & A & C & G & B \\
+            G & N & T & I & I & F \\
+            G & U & R & T & O & H \\
+            I & W & H & H & E & T \\
+            T & N & W & N & A & D \\
+            S & O & G & I & T & N \\
+            G & A & R & T & T & A \\
+            Y & O & N & A & D & I \\
+        \end{bmatrix} \Rightarrow \begin{bmatrix}
+            D & O & Y & O & U & E \\
+            V & E & R & F & E & E \\
+            L & L & I & K & E & A \\
+            P & L & A & S & T & I \\
+            C & B & A & G & D & R \\
+            I & F & T & I & N & G \\
+            T & H & R & O & U & G \\
+            H & T & H & E & W & I \\
+            N & D & W & A & N & T \\
+            I & N & G & T & O & S \\
+            T & A & R & T & A & G \\
+            A & I & N & D & O & Y \\
+        \end{bmatrix}
+    \end{equation*}
+    Therefore, the plaintext is: \textsf{Do you feel like a plastic bag drifting through the wind wanting to start again} with extra letters being \textsf{doy}.
+
+    We now need a permutation that satisfies the order in which the rectangular transposition was put in. Observe that the order of the permutation has the form
+    \begin{equation*}
+        \begin{pmatrix}
+            1 & 2 & 3 & 4 & 5 & 6 \\
+            6 & 5 & 3 & 1 & 4 & 2
+        \end{pmatrix}
+    \end{equation*}
+    So the key is 463521, i.e. $(123456) \mapsto (463521)$.
+\end{solution}
+
+\end{document}

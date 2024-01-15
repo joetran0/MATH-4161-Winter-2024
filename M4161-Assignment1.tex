@@ -1,0 +1,67 @@
+\documentclass[11pt]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts, amssymb, amsmath, amsthm, booktabs, hyperref, pgfplots, tikz, xcolor}
+
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{definition}\newtheorem{question}{Question}
+\theoremstyle{definition}\newtheorem*{solution}{Solution}
+
+\date{January 9, 2024}
+
+\setlength{\parskip}{5pt}
+
+\begin{document}
+
+\noindent \textbf{MATH 4161 Mathematics of Cryptography} \hfill \textbf{Assignment 1} \\
+\noindent \textsc{Lecture} \hfill \textsc{Joe Tran}
+
+\begin{question}
+    Decipher the following ciphertext into plaintext: \textbf{\textsf{XQVHH QSDWK VDKHD G}} and determine the key.
+\end{question}
+
+\begin{solution}
+    Starting with the ciphertext given by
+    \begin{verbatim}
+        X Q V H H  Q S D W K  V D K H D  G
+        = = = = =  = = = = =  = = = = =  =
+        Y R W I I  R T E X L  W E L I E  H
+        Z S X J J  S U F Y M  X F M J F  I
+        A T Y K K  T V G Z N  Y G N K G  J
+        B U Z L L  U W H A O  Z H O L H  K
+        C V A M M  V X I B P  A I P M I  L
+        D W B N N  W Y J C Q  B J Q N J  M
+        E X C O O  X Z K D R  C K R O K  N
+        F Y D P P  Y A L E S  D L S P L  O
+        G Z E Q Q  Z B M F T  E M T Q M  P
+        H A F R R  A C N G U  F N U R N  Q
+        I B G S S  B D O H V  G O V S O  R
+        J C H T T  C E P I W  H P W T P  S
+        K D I U U  D F Q J X  I Q X U Q  T
+        L E J V V  E G R K Y  J R Y V R  U
+        M F K W W  F H S L Z  K S Z W S  V
+        N G L X X  G I T M A  L T A X T  W
+        O H M Y Y  H J U N B  M U B Y U  X
+        P I N Z Z  I K V O C  N V C Z V  Y
+        Q J O A A  J L W P D  O W D A W  Z
+        R K P B B  K M X Q E  P X E B X  A
+        S L Q C C  L N Y R F  Q Y F C Y  B
+        T M R D D  M O Z S G  R Z G D Z  C
+        U N S E E  N P A T H  S A H E A  D <-
+        V O T F F  O Q B U I  T B I F B  E
+        W P U G G  P R C V J  U C J G C  F
+    \end{verbatim}
+    The plaintext is then \verb|UNSEE NPATH SAHEA D|
+\end{solution}
+
+For the key, observe that because from the plaintext U gets mapped to ciphertext X, then
+\begin{center}
+    \begin{tabular}{cccccccccccccccccccccccccc}
+        A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\
+        $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ & $\Uparrow$ \\
+        X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W
+    \end{tabular}
+\end{center}
+So our key is D.
+
+\end{document}

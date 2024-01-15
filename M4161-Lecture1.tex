@@ -1,0 +1,199 @@
+\documentclass[11pt]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts, amssymb, amsmath, amsthm, booktabs, hyperref, pgfplots, tikz, xcolor}
+
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{definition}\newtheorem{example}{Example}
+
+\date{January 9, 2024}
+
+\setlength{\parskip}{5pt}
+
+\begin{document}
+
+\noindent \textbf{MATH 4161 Mathematics of Cryptography} \hfill \textbf{Lecture 1} \\
+\noindent \textsc{Lecture} \hfill \textsc{Joe Tran}
+
+\tableofcontents
+
+\section{What this class is about}
+
+This class will cover topics including
+\begin{itemize}
+    \item Probability theory
+    \item Information theory
+    \item Number theory
+\end{itemize}
+
+\section{Course Outline}
+
+\subsection{Course Description}
+
+Cryptography deals with the study of making and breaking secret codes.
+
+In this course we will be studying situations that are often framed as a game between three parties: a sender (e.g., an embassy), a receiver (the government office) and an opponent (a spy). We assume that the sender needs to get an urgent message to the receiver through communication channels which are vulnerable to the opponent. To do this communication, the sender and receiver agree in advance to use some sort of code which is unlocked by a keyword or phrase. The opponent will be able to intercept the message. Is he/she able to unlock the message without knowing the key?
+
+In this course we will learn some probability theory, information theory and number theory to answer questions about how vulnerable the methods of sending secrets are. This has a great number of applications to internet credit card transactions, wireless communication and electronic voting. We will start by learning some classical codes (used up through WWI) and analyzing those. The last third of the course we will start to learn the methods that are used in modern cryptography.
+
+``Few persons can be made to believe that it is not quite an easy thing to invent a method of secret writing which shall bate investigation. Yet it may roundly be asserted that human ingenuity cannot concoct a cipher which human ingenuity cannot resolve'' (Edgar Allan Poe, 1809-1849)
+
+\subsection{Course components}
+
+\begin{itemize}
+    \item 50\% Assignments.
+    \begin{itemize}
+        \item Email then submit on eClass.
+        \item Roughly 20, best 15 of 20 for this grade remaining are extra credit towards final.
+    \end{itemize}
+    \item 30\% Tests (Open book)
+    \begin{itemize}
+        \item 3 tests 10\% each
+        \item Test 1: Probability theory
+        \item Test 2: Information theory
+        \item Test 3: Number Theory
+    \end{itemize}
+    \item 20\% Final Exam (not comprehensive, open book)
+\end{itemize}
+Tests and exam: open books, open notes, closed friends and enemies. Open computers.
+
+\section{Vocabulary}
+
+\begin{itemize}
+    \item \textbf{Cryptography:} The art of secret writing.
+    \item \textbf{Plaintext:} Text to be encoded for secrecy.
+    \item \textbf{Ciphertext:} Encoded text. Short ciphertext is sometimes called a ``cryptogram''
+    \item \textbf{Cipher:} A method of secret writing.
+    \item \textbf{$n$-gram:} A string of $n$-letters.
+    \item \textbf{Encipherment, Encryption:} The process of encoding plaintext into ciphertext.
+    \item \textbf{Decipherment, Decryption:} The process of decoding ciphertext back into plaintext.
+    \item \textbf{Encrypt, Decrypt:} These are corresponding verbs.
+    \item \textbf{Sender:} The person or organization that is to send the encrypted message.
+    \item \textbf{Receiver:} The person or organization which is to receive and decrypt the message.
+    \item \textbf{Opponent:} The person or organization which intercepts the message and attempts the unauthorized decipherment.
+    \item \textbf{Key:} The information, usually a sequence of digits or symbols, used to determine the method by which plaintext is to be transformed into ciphertext.
+    \item \textbf{Cryptographic System, Encipherment Scheme:} A family of ciphers (transformations of plaintext into cipherment to be used for encryption and decryption). Each member of the family is determined by a particular key.
+    \item \textbf{Message Space:} The collection of all messages that may occur in a particular cryptographic transaction.
+    \item \textbf{Key Space:} The collection of all keys that may occur in a given cryptographic system.
+    \item \textbf{Cryptanalysis:} The process by which the opponent attempts to recover the original plaintext from the intercepted ciphertext.
+    \item \textbf{Code Breaking:} The process by which a cryptographic system is made vulnerable to cryptanalysis.
+    \item \textbf{One-Time Pad:} A key to be used only once.
+\end{itemize}
+
+In a typical cryptographic transaction the sender and receiver choose a cryptographic system and, at some time before the message is to be sent, the sender chooses the key. This determines which transformation of the system will be used to encrypt the message. The key is then sent to the receiver by some safe path (inaccessible to the opponent). Upon obtaining the key the receiver determines which transformation of the system is to be used to decrypt the message.
+
+A number of assumptions are usually made without explicit mention about cryptographic transactions. It is assumed that safe paths between sender and receiver do exist though generally they may be impractical to use for the message itself (for instance the path may require hand carrying by an especially trusted messenger). While, for practical reasons (such as speed of delivery for instance) the path taken by the message itself may have to be “unsafe”. Furthermore, security of the message is not usually expected to be achieved through the opponent's ignorance of the encryption system but rather from lack of knowledge as to which particular transformation of the family has been used in the encipherment. That is, the opponent's task usually consists of reconstructing the key from an analysis of the ciphertext. Security is achieved by assuring that the key space is too large for an exhaustive trial and error attack to be practical.
+
+Of course, the basic goal of the opponent is to recover the original plaintext. This may not necessarily involve reconstructing the key.
+
+The two main methods of encryption are Substitution and Transposition and most known modern methods are a mixture of both. These two methods may be described as follows:
+
+\section{Introductory Cyphers: Caesar and Vigenere}
+
+\begin{definition}[Substitution]
+    When individual letters or $n$-grams of plaintext are replaced by letters or $n$-grams of ciphertext.
+\end{definition}
+
+\begin{example}
+    Consider the following text:
+    \begin{center}
+        \verb|THE END OF THE WORLD AS WE KNOW IT|
+    \end{center}
+    and substitute the following letters to transform the text to
+    \begin{center}
+        \verb|WKH HQG RI WKH ZRUOG DV ZH NQRZ LW|
+    \end{center}
+\end{example}
+
+\begin{definition}[Transposition]
+    When the characters of the original message are rearranged according to some particular pattern.
+\end{definition}
+    
+\begin{example}
+    Consider the following text:
+    \begin{center}
+        \verb|FRANKLY MY DEAR|
+    \end{center}
+    and applying a transposition
+    \begin{center}
+        \verb|MADLA RKYEN FRY|
+    \end{center}
+\end{example}
+
+\begin{definition}
+    The \emph{cypherspace} is the set of all messages or keys in a space. No messages in this space will overlap. (Visual representation of an encipherment scheme that is vulnerable to attack)
+\end{definition}
+
+Let $C(m, k)$ be the encrypt $m$ using encipherment scheme $C$ using key $k$. If $C(m, k) = C(m', k')$, then it is impossible to tell from the cyphertext alone whether a cyphertext corresponds to $m$ or $m'$. In terms of math, can be thought of as an one-to-one function.
+
+\begin{example}
+    Given the plaintext:
+    \begin{center}
+        \verb|TOBEO RNOTT OBE|
+    \end{center}
+    And suppose we're performing the following shift:
+    \begin{center}
+        \verb|A B C D E F G H I J K L M N O P Q R S T U V W X Y Z| \\
+        \verb|R S T U V W X Y Z A B C D E F G H I J K L M N O P Q|
+    \end{center}
+    Then the above plaintext becomes the cyphertext given by
+    \begin{center}
+        \verb|KFSVF IEFKK FSV|
+    \end{center}
+    Then observe that (look vertically)
+    \begin{verbatim}
+        K   L M N O P Q R S T U V W X Y Z A B C D E F G H I J
+        F   G H I J K L M N O P Q R S T U V W X Y Z A B C D E
+        S   T U V W X Y Z A B C D E F G H I J K L M N O P Q R
+        V   W X Y Z A B C D E F G H I J K L M N O P Q R S T U
+        F   G H I J K L M N O P Q R S T U V W X Y Z A B C D E
+
+        I   J K L M N O P Q R S T U V W X Y Z A B C D E F G H
+        E   F G H I J K L M N O P Q R S T U V W X Y Z A B C D
+        F   G H I J K L M N O P Q R S T U V W X Y Z A B C D E
+        K   L M N O P Q R S T U V W X Y Z A B C D E F G H I J
+        K   L M N O P Q R S T U V W X Y Z A B C D E F G H I J
+
+        F   G H I J K L M N O P Q R S T U V W X Y Z A B C D E
+        S   T U V W X Y Z A B C D E F G H I J K L M N O P Q R
+        V   W X Y Z A B C D E F G H I J K L M N O P Q R S T U
+    \end{verbatim}
+    The \verb|TOBEO RNOTT OBE| is located at the 9th column, which we basically observe the English word that is being produced each time.
+\end{example}
+
+\section{Further Notes: Caesar and Vigenere Substitutions}
+
+Suppose we are given the following plaintext given by
+\begin{center}
+    A penny saved is a penny earned
+\end{center}
+and we consider the following substitution given by the following
+\begin{center}
+    \begin{tabular}{cccccccccccccccccccccccccc}
+        A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\
+        $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ \\
+        D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C
+    \end{tabular}
+\end{center}
+to encrypt it. We first ignore the spaces and write the text in uppercase
+\begin{center}
+    APENNYSAVEDISAPENNYEARNED
+\end{center}
+and we substitute each letter with the letter below it in the above substitution. So then our cyphertext will then become
+\begin{center}
+    DSHQQBVBYHGLVDSHQQBHDUPHG
+\end{center}
+This substitution is an example of one of the earliest known cyphers, known as the Caesar cypher or Caesar substitution. There are 26 different forms of Caesar substitutions. For example, we could have made the following substitution instead
+\begin{center}
+    \begin{tabular}{cccccccccccccccccccccccccc}
+        A & B & C & D & E & F & G & H & I & J & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\
+        $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ & $\Downarrow$ \\
+        P & Q & R & S & T & U & V & W & X & Y & Z & A & B & C & D & E & F & G & H & I & J & K & L & M & N & O
+    \end{tabular}
+\end{center}
+Our message would then appear as
+\begin{center}
+    PETCCNHPKTSXHPETTCCNTPGCTS
+\end{center}
+
+\end{document}
