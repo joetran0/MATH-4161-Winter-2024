@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts, amssymb, amsmath, amsthm, booktabs, hyperref, pgfplots, tikz, xcolor}
+
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{definition}\newtheorem{question}{Question}
+\theoremstyle{definition}\newtheorem*{solution}{Solution}
+
+\date{January 9, 2024}
+
+\setlength{\parskip}{5pt}
+
+\begin{document}
+
+\noindent \textbf{MATH 4161 Mathematics of Cryptography} \hfill \textbf{Assignment 4} \\
+\noindent \textsc{Assignment} \hfill \textsc{Joe Tran}
+
+\begin{question}
+    Given the ciphertext \textsf{RB BL RP ST AP VY GY XC TX CA ZA GO BE YD QG IC CF ZM WL WH DK PL ST UW DK RC OQ AW} and given the partial key
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|} \hline
+            O & X & F & V & M \\ \hline
+            Y & K & W & * & N \\ \hline
+            * & T & R & L & * \\ \hline
+            Q & B & * & A & * \\ \hline
+            S & I & P & D & G \\ \hline
+        \end{tabular}
+    \end{center}
+    where * means that there is a letter that you have to fill in. Determine the plaintext and determine the key.
+\end{question}
+
+\begin{solution}
+    First note that the key is missing the following letters: C, E, H, U, and Z. Using the above table, we can find part of the plaintext as follows:
+    \begin{center}
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            R & B & B & L & R & P & S & T & A & P & V & Y & G & Y & X & C & T & X & C & A \\ \hline
+            T & * & A & T & W & * & I & * & * & D & O & * & S & N & • & • & K & I & • & • \\ \hline
+        \end{tabular}
+
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            Z & A & G & O & B & E & Y & D & Q & G & I & C & C & F & Z & M & W & L & W & H \\ \hline
+            • & • & S & M & • & • & * & S & * & S & • & • & • & • & • & • & * & R & • & • \\ \hline
+        \end{tabular}
+
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            D & K & P & L & S & T & U & W & D & K & R & C & O & Q & A & W \\ \hline
+            I & * & D & R & I & * & • & • & I & * & • & • & S & * & * & * \\ \hline
+        \end{tabular}
+    \end{center}
+    where • denotes the letter that cannot be determined at the moment.
+
+    First observe the first four letters T*AT. One of the letters that can be used in this case is H, and so the fourth row then becomes
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|} \hline
+            Q & B & \textcolor{red}{H} & A & * \\ \hline
+        \end{tabular}
+    \end{center}
+    making the first four letters THAT. Then filling out what we have,
+    \begin{center}
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            R & B & B & L & R & P & S & T & A & P & V & Y & G & Y & X & C & T & X & C & A \\ \hline
+            T & \textcolor{red}{H} & A & T & W & \textcolor{red}{H} & I & * & \textcolor{red}{H} & D & O & * & S & N & • & • & K & I & • & • \\ \hline
+        \end{tabular}
+
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            Z & A & G & O & B & E & Y & D & Q & G & I & C & C & F & Z & M & W & L & W & H \\ \hline
+            • & • & S & M & • & • & * & S & * & S & • & • & • & • & • & • & * & R & F & R \\ \hline
+        \end{tabular}
+
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            D & K & P & L & S & T & U & W & D & K & R & C & O & Q & A & W \\ \hline
+            I & * & D & R & I & * & • & • & I & * & • & • & S & * & \textcolor{red}{H} & * \\ \hline
+        \end{tabular}
+    \end{center}
+
+    Next, observe the next five letters after THAT, WHI*H. One of the letters that can be used in this case is C, and so the third row becomes
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|} \hline
+            \textcolor{blue}{C} & T & R & L & * \\ \hline
+        \end{tabular}
+    \end{center}
+    making the five letters WHICH. Then filling out what we have,
+    \begin{center}
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            R & B & B & L & R & P & S & T & A & P & V & Y & G & Y & X & C & T & X & C & A \\ \hline
+            T & \textcolor{red}{H} & A & T & W & \textcolor{red}{H} & I & \textcolor{blue}{C} & \textcolor{red}{H} & D & O & * & S & N & O & T & K & I & L & Q \\ \hline
+        \end{tabular}
+
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            Z & A & G & O & B & E & Y & D & Q & G & I & C & C & F & Z & M & W & L & W & H \\ \hline
+            • & • & S & M & • & • & * & S & * & S & S & T & R & O & • & • & * & R & F & R \\ \hline
+        \end{tabular}
+
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            D & K & P & L & S & T & U & W & D & K & R & C & O & Q & A & W \\ \hline
+            I & * & D & R & I & \textcolor{blue}{C} & • & • & I & * & • & • & S & \textcolor{blue}{C} & \textcolor{red}{H} & * \\ \hline
+        \end{tabular}
+    \end{center}
+
+    Next, observe the two 3-grams WH, DK and PL, FRI*DR. Ignoring the last R for the moment, one of the letters that we can use in this situation is E, and so making the second row
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|} \hline
+            Y & K & W & \textcolor{green}{E} & N \\ \hline
+        \end{tabular}
+    \end{center}
+    and thus, we have FRIEDR. Then filling what we can,
+    \begin{center}
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            R & B & B & L & R & P & S & T & A & P & V & Y & G & Y & X & C & T & X & C & A \\ \hline
+            T & \textcolor{red}{H} & A & T & W & \textcolor{red}{H} & I & \textcolor{blue}{C} & \textcolor{red}{H} & D & O & \textcolor{green}{E} & S & N & O & T & K & I & L & Q \\ \hline
+        \end{tabular}
+
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            Z & A & G & O & B & E & Y & D & Q & G & I & C & C & F & Z & M & W & L & W & H \\ \hline
+            • & • & S & M & A & K & \textcolor{green}{E} & S & * & S & S & T & R & O & • & • & \textcolor{green}{E} & R & F & R \\ \hline
+        \end{tabular}
+
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            D & K & P & L & S & T & U & W & D & K & R & C & O & Q & A & W \\ \hline
+            I & \textcolor{green}{E} & D & R & I & \textcolor{blue}{C} & • & • & I & \textcolor{green}{E} & T & * & S & \textcolor{blue}{C} & \textcolor{red}{H} & \textcolor{green}{E} \\ \hline
+        \end{tabular}
+    \end{center}
+
+    Now, observe the 2-gram QG. One of the letters that can be used in this case is U, so the fourth row becomes
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|} \hline
+            Q & B & \textcolor{red}{H} & A & \textcolor{magenta}{U} \\ \hline
+        \end{tabular}
+    \end{center}
+    making the 2-gram US in plaintext. So now,
+    \begin{center}
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            R & B & B & L & R & P & S & T & A & P & V & Y & G & Y & X & C & T & X & C & A \\ \hline
+            T & \textcolor{red}{H} & A & T & W & \textcolor{red}{H} & I & \textcolor{blue}{C} & \textcolor{red}{H} & D & O & \textcolor{green}{E} & S & N & O & T & K & I & L & Q \\ \hline
+        \end{tabular}
+
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            Z & A & G & O & B & E & Y & D & Q & G & I & C & C & F & Z & M & W & L & W & H \\ \hline
+            * & \textcolor{magenta}{U} & S & M & A & K & \textcolor{green}{E} & S & \textcolor{magenta}{U} & S & S & T & R & O & • & • & \textcolor{green}{E} & R & F & R \\ \hline
+        \end{tabular}
+
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            D & K & P & L & S & T & U & W & D & K & R & C & O & Q & A & W \\ \hline
+            I & \textcolor{green}{E} & D & R & I & \textcolor{blue}{C} & H & N & I & \textcolor{green}{E} & T & * & S & \textcolor{blue}{C} & \textcolor{red}{H} & \textcolor{green}{E} \\ \hline
+        \end{tabular}
+    \end{center}
+
+    Lastly, it follows that the last remaining letter is Z, which belongs to the third row
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|} \hline
+            \textcolor{blue}{C} & T & R & L & \textcolor{cyan}{Z} \\ \hline
+        \end{tabular}
+    \end{center}
+    So now,
+    \begin{center}
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            R & B & B & L & R & P & S & T & A & P & V & Y & G & Y & X & C & T & X & C & A \\ \hline
+            T & \textcolor{red}{H} & A & T & W & \textcolor{red}{H} & I & \textcolor{blue}{C} & \textcolor{red}{H} & D & O & \textcolor{green}{E} & S & N & O & T & K & I & L & Q \\ \hline
+        \end{tabular}
+
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            Z & A & G & O & B & E & Y & D & Q & G & I & C & C & F & Z & M & W & L & W & H \\ \hline
+            L & \textcolor{magenta}{U} & S & M & A & K & \textcolor{green}{E} & S & \textcolor{magenta}{U} & S & S & T & R & O & N & G & \textcolor{green}{E} & R & F & R \\ \hline
+        \end{tabular}
+
+        \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+            D & K & P & L & S & T & U & W & D & K & R & C & O & Q & A & W \\ \hline
+            I & \textcolor{green}{E} & D & R & I & \textcolor{blue}{C} & H & N & I & \textcolor{green}{E} & T & \textcolor{cyan}{Z} & S & \textcolor{blue}{C} & \textcolor{red}{H} & \textcolor{green}{E} \\ \hline
+        \end{tabular}
+    \end{center}
+
+    Therefore, the plaintext is \textsf{That which does not kill us makes us stronger Friedrich Nietzsche} and the key is the table given by
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|} \hline
+            O & X & F & V & M \\ \hline
+            Y & K & W & \textcolor{green}{E} & N \\ \hline
+            \textcolor{blue}{C} & T & R & L & \textcolor{cyan}{Z} \\ \hline
+            Q & B & \textcolor{red}{H} & A & \textcolor{magenta}{U} \\ \hline
+            S & I & P & D & G \\ \hline
+        \end{tabular}
+    \end{center}
+\end{solution}
+
+\end{document}
