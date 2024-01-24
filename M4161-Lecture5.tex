@@ -1,0 +1,115 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts, amssymb, amsmath, amsthm, booktabs, hyperref, pgfplots, tikz, xcolor}
+
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{definition}\newtheorem{example}{Example}
+\theoremstyle{definition}\newtheorem{samplecode}{Sample Code}
+
+\begin{document}
+
+\noindent \textbf{MATH 4161 Mathematics of Cryptography} \hfill \textbf{Lecture 5} \\
+\noindent \textsc{Lecture} \hfill \textsc{Joe Tran}
+
+\section{Agenda}
+
+\begin{itemize}
+    \item Assignments: 9 will be due on Jan 31.
+    \item Hill and Modular Arithmetic
+    \item Feistel and Bit Operations
+\end{itemize}
+
+\section{Hill and Modular Arithmetic}
+
+The key is a $k \times k$ matrix
+\begin{equation*}
+    A = \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1k} \\
+        a_{21} & a_{22} & \cdots & a_{2k} \\
+        \vdots & \vdots & & \vdots \\
+        a_{k1} & a_{k2} & \cdots & a_{kk}
+    \end{bmatrix}
+\end{equation*}
+We require that $\gcd(\det(A), 29) = 1$. Given a sequence of values $p_1, p_2,..., p_k \to c_1, c_2,..., c_k$, where for each $i$,
+\begin{equation*}
+    c_i = a_{i1}p_1 + a_{i2}p_2 + \cdots + a_{ik}p_k \pmod {29}
+\end{equation*}
+or
+\begin{equation*}
+    \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1k} \\
+        a_{21} & a_{22} & \cdots & a_{2k} \\
+        \vdots & \vdots & & \vdots \\
+        a_{k1} & a_{k2} & \cdots & a_{kk}
+    \end{bmatrix}\begin{bmatrix} p_1 \\ p_2 \\ \vdots \\ p_k \end{bmatrix} = \begin{bmatrix} c_1 \\ c_2 \\ \vdots \\ c_k \end{bmatrix} \pmod {29}
+\end{equation*}
+then
+\begin{equation*}
+    \begin{bmatrix} p_1 \\ p_2 \\ \vdots \\ p_k \end{bmatrix} = \begin{bmatrix}
+        a_{11} & a_{12} & \cdots & a_{1k} \\
+        a_{21} & a_{22} & \cdots & a_{2k} \\
+        \vdots & \vdots & & \vdots \\
+        a_{k1} & a_{k2} & \cdots & a_{kk}
+    \end{bmatrix}^{-1}\begin{bmatrix} c_1 \\ c_2 \\ \vdots \\ c_k \end{bmatrix} \pmod {29}
+\end{equation*}
+
+\begin{example}
+    If the key $A = \begin{bmatrix} 5 & 13 \\ 1 & 17 \end{bmatrix}$ and the plaintext is GIFT, or 6-8-5-19 then
+    \begin{equation*}
+        \begin{bmatrix} 5 & 13 \\ 1 & 17 \end{bmatrix} \begin{bmatrix} 6 \\ 8 \end{bmatrix} = \begin{bmatrix} 5 \cdot_{29} 6 +_{29} 8 \cdot_{29} 13 \\ 1 \cdot_{29} 6 +_{29} 17 \cdot_{29} 8\end{bmatrix} = \begin{bmatrix} 18 \\ 26 \end{bmatrix} = \begin{bmatrix} S \\ . \end{bmatrix}
+    \end{equation*}
+    and
+    \begin{equation*}
+        \begin{bmatrix} 5 & 13 \\ 1 & 17 \end{bmatrix} \begin{bmatrix} 5 \\ 19 \end{bmatrix} = \begin{bmatrix} 5 \cdot_{29} 5 +_{29} 13 \cdot_{29} 19 \\ 1 \cdot_{29} 5 +_{29} 17 \cdot_{29} 19 \end{bmatrix} = \begin{bmatrix} 11 \\ 9 \end{bmatrix} = \begin{bmatrix}  \end{bmatrix}
+    \end{equation*}
+    or alternatively,
+    \begin{equation*}
+        \begin{bmatrix} 5 & 13 \\ 1 & 17 \end{bmatrix}\begin{bmatrix} 6 & 5 \\ 8 & 19 \end{bmatrix} = \begin{bmatrix} 18 & 11 \\ 26 & 9 \end{bmatrix}
+    \end{equation*}
+\end{example}
+
+\begin{example}
+    Recover the plaintext from the ciphertext FVGLNPCJSG given that it was enrypted using the Hill encipherment system with a $2 \times 2$ matrix mod 29 and the plaintext begins with the letters tell.
+\end{example}
+
+We seek a key of the form $k = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$. Our plaintext is tell which translates to 19 4 11 11, and so in ciphertext we have FVGL which translates to 5 21 6 11. Then we have
+\begin{equation*}
+    \begin{bmatrix} a & b \\ c & d \end{bmatrix}\begin{bmatrix} 19 \\ 4 \end{bmatrix} = \begin{bmatrix} 5 \\ 21 \end{bmatrix}
+\end{equation*}
+and
+\begin{equation*}
+    \begin{bmatrix} a & b \\ c & d \end{bmatrix}\begin{bmatrix} 11 \\ 11 \end{bmatrix} = \begin{bmatrix} 6 \\ 11 \end{bmatrix}
+\end{equation*}
+Or in other words,
+\begin{align*}
+    \begin{bmatrix}
+        a & b \\ c & d
+    \end{bmatrix}\begin{bmatrix}
+        19 & 11 \\ 4 & 11
+    \end{bmatrix}\begin{bmatrix}
+        19 & 11 \\ 4 & 11
+    \end{bmatrix}^{-1} &= \begin{bmatrix} 
+        5 & 6 \\ 21 & 11
+    \end{bmatrix} \begin{bmatrix}
+        19 & 11 \\ 4 & 11
+    \end{bmatrix}^{-1} \\
+    \begin{bmatrix}
+        a & b \\ c & d \end{bmatrix} &= \begin{bmatrix} 
+            5 & 6 \\ 21 & 11
+        \end{bmatrix} \begin{bmatrix}
+            19 & 11 \\ 4 & 11
+        \end{bmatrix}^{-1} \\
+    \begin{bmatrix}
+        a & b \\ c & d 
+    \end{bmatrix}^{-1} &= \cdots
+\end{align*}
+But then
+\begin{equation*}
+    \begin{bmatrix}
+        a & b \\ c & d 
+    \end{bmatrix}^{-1h}\begin{bmatrix} 5 & 6 & 13 & 2 & 18 \\ 21 & 11 & 15 & 9 & 6 \end{bmatrix} = \cdots
+\end{equation*}
+
+
+\end{document}

@@ -1,0 +1,95 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts, amssymb, amsmath, amsthm, booktabs, hyperref, pgfplots, tikz, xcolor}
+
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{definition}\newtheorem{question}{Question}
+\theoremstyle{definition}\newtheorem*{solution}{Solution}
+
+\date{January 9, 2024}
+
+\setlength{\parskip}{5pt}
+
+\begin{document}
+
+\noindent \textbf{MATH 4161 Mathematics of Cryptography} \hfill \textbf{Assignment 5} \\
+\noindent \textsc{Assignment} \hfill \textsc{Joe Tran}
+
+\begin{question}
+    Given the ciphertext: \textsf{102-85-119-80-16-86-119-92-82-107-20 
+    82-68 
+    55-42-12-67-45-92-101-102-20-80 
+    82-69 
+    102-68 
+    92-29-12 
+    36-90-78-94-16-78-43 
+    21-27 
+    18-82-27-12'91 
+    121-35-19-82-86-57 
+    99-40-92-38-119-76-92-102-21-86-39}, determine the plaintext and the key.
+\end{question}
+
+\begin{solution}
+    Since we our largest value in the given ciphertext is \textsf{121}, then at most, we would have 5 rows in our homophonic table. We will first have a look at the punctuation. Since we have '91, there are only a few common apostrophes that we can have here: 'd, 't, or 's.
+
+    We claim that the contraction is 's, i.e. S is 91. Then we have the table for the 4th row given as:
+    \begin{center}\tiny\hspace*{-20pt}
+        \begin{tabular}{ccccccccccccccccccccccccc} \hline
+            A & B & C & D & E & F & G & H & I & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\ \hline
+            99 & 100 & 76 & 77 & 78 & 79 & 80 & 81 & 82 & 83 & 84 & 85 & 86 & 87 & 88 & 89 & 90 & 91 & 92 & 93 & 94 & 95 & 96 & 97 & 98 \\ \hline
+        \end{tabular}
+    \end{center}
+    So now filling out what we have: 102-\textcolor{red}{M}-119-\textcolor{red}{G}-16-\textcolor{red}{N}-119-\textcolor{red}{T}-\textcolor{red}{I}-107-20 \textcolor{red}{I}-68 55-42-12-67-45-\textcolor{red}{T}-101-102-20-\textcolor{red}{G} \textcolor{red}{I}-69 102-68 \textcolor{red}{T}-29-12 36-\textcolor{red}{R}-\textcolor{red}{E}-\textcolor{red}{V}-16-\textcolor{red}{E}-43 21-27 18-\textcolor{red}{I}-27-12'\textcolor{red}{S} 121-35-19-\textcolor{red}{I}-\textcolor{red}{N}-57 \textcolor{red}{A}-40-\textcolor{red}{T}-38-119-\textcolor{red}{C}-\textcolor{red}{T}-102-21-\textcolor{red}{N}-39.
+
+    Now let us have a look at the two-letter words. Namely, \textcolor{red}{I}-68 and \textcolor{red}{I}-69. The only two words that can make sense in this situation is IS and IT, and since S is before T, we claim that S is 68 and T is 69. Then with this information, our third row becomes
+    \begin{center}\tiny\hspace*{-20pt}
+        \begin{tabular}{ccccccccccccccccccccccccc} \hline
+            A & B & C & D & E & F & G & H & I & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\ \hline
+            51 & 52 & 53 & 54 & 55 & 56 & 57 & 58 & 59 & 60 & 61 & 62 & 63 & 64 & 65 & 66 & 67 & 68 & 69 & 70 & 71 & 72 & 73 & 74 & 75 \\ \hline
+        \end{tabular}
+    \end{center}
+    Then with the information above, we now have: 102-\textcolor{red}{M}-119-\textcolor{red}{G}-16-\textcolor{red}{N}-119-\textcolor{red}{T}-\textcolor{red}{I}-107-20 \textcolor{red}{I}-\textcolor{blue}{S} \textcolor{blue}{E}-42-12-\textcolor{blue}{R}-45-\textcolor{red}{T}-101-102-20-\textcolor{red}{G} \textcolor{red}{I}-\textcolor{blue}{T} 102-\textcolor{blue}{S} \textcolor{red}{T}-29-12 36-\textcolor{red}{R}-\textcolor{red}{E}-\textcolor{red}{V}-16-\textcolor{red}{E}-43 21-27 18-\textcolor{red}{I}-27-12'\textcolor{red}{S} 121-35-19-\textcolor{red}{I}-\textcolor{red}{N}-\textcolor{blue}{G} \textcolor{red}{A}-40-\textcolor{red}{T}-38-119-\textcolor{red}{C}-\textcolor{red}{T}-102-21-\textcolor{red}{N}-39.
+
+    Now let us have a look at the next two letter word, namely 102-S. Now the only one letter that can come to mind is I. If this were the case, then I would be 102 for the 5th row, and so
+    \begin{center}\tiny\hspace*{-50pt}
+        \begin{tabular}{ccccccccccccccccccccccccc} \hline
+            A & B & C & D & E & F & G & H & I & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\ \hline
+            119 & 120 & 121 & 122 & 123 & 124 & 125 & 101 & 102 & 103 & 104 & 105 & 106 & 107 & 108 & 109 & 110 & 111 & 112 & 113 & 114 & 115 & 116 & 117 & 118 \\ \hline
+        \end{tabular}
+    \end{center}
+    Then with the information above, we now have: \textcolor{green}{I}-\textcolor{red}{M}-\textcolor{green}{A}-\textcolor{red}{G}-16-\textcolor{red}{N}-\textcolor{green}{A}-\textcolor{red}{T}-\textcolor{red}{I}-\textcolor{green}{O}-20 \textcolor{red}{I}-\textcolor{blue}{S} \textcolor{blue}{E}-42-12-\textcolor{blue}{R}-45-\textcolor{red}{T}-\textcolor{green}{H}-\textcolor{green}{I}-20-\textcolor{red}{G} \textcolor{red}{I}-\textcolor{blue}{T} \textcolor{green}{I}-\textcolor{blue}{S} \textcolor{red}{T}-29-12 36-\textcolor{red}{R}-\textcolor{red}{E}-\textcolor{red}{V}-16-\textcolor{red}{E}-43 21-27 18-\textcolor{red}{I}-27-12'\textcolor{red}{S} \textcolor{green}{C}-35-19-\textcolor{red}{I}-\textcolor{red}{N}-\textcolor{blue}{G} \textcolor{red}{A}-40-\textcolor{red}{T}-38-\textcolor{green}{A}-\textcolor{red}{C}-\textcolor{red}{T}-\textcolor{green}{I}-21-\textcolor{red}{N}-39.
+
+    Now let us have a look at the first word I-M-A-G-16-N-A-T-I-O-20. There is only one word in which we can spell at this point is IMAGINATION. Therefore, I would be 16 in row 1.
+    \begin{center}\tiny\hspace*{-20pt}
+        \begin{tabular}{ccccccccccccccccccccccccc} \hline
+            A & B & C & D & E & F & G & H & I & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\ \hline
+            8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 & 21 & 22 & 23 & 24 & 25 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+        \end{tabular}
+    \end{center}
+    Then with the information above, we now have: \textcolor{green}{I}-\textcolor{red}{M}-\textcolor{green}{A}-\textcolor{red}{G}-\textcolor{magenta}{I}-\textcolor{red}{N}-\textcolor{green}{A}-\textcolor{red}{T}-\textcolor{red}{I}-\textcolor{green}{O}-\textcolor{magenta}{N} \textcolor{red}{I}-\textcolor{blue}{S} \textcolor{blue}{E}-42-\textcolor{magenta}{E}-\textcolor{blue}{R}-45-\textcolor{red}{T}-\textcolor{green}{H}-\textcolor{green}{I}-\textcolor{magenta}{N}-\textcolor{red}{G} \textcolor{red}{I}-\textcolor{blue}{T} \textcolor{green}{I}-\textcolor{blue}{S} \textcolor{red}{T}-29-\textcolor{magenta}{E} 36-\textcolor{red}{R}-\textcolor{red}{E}-\textcolor{red}{V}-\textcolor{magenta}{I}-\textcolor{red}{E}-43 \textcolor{magenta}{O}-27 \textcolor{magenta}{L}-\textcolor{red}{I}-27-\textcolor{magenta}{E}'\textcolor{red}{S} \textcolor{green}{C}-35-\textcolor{magenta}{M}-\textcolor{red}{I}-\textcolor{red}{N}-\textcolor{blue}{G} \textcolor{red}{A}-40-\textcolor{red}{T}-38-\textcolor{green}{A}-\textcolor{red}{C}-\textcolor{red}{T}-\textcolor{green}{I}-\textcolor{magenta}{O}-\textcolor{red}{N}-39.
+
+    Finally, let us have a look at the two letter word O-27. The only acceptable word in this case would be OF, so we claim that F is 27. If this was the case, then
+    \begin{center}\tiny\hspace*{-20pt}
+        \begin{tabular}{ccccccccccccccccccccccccc} \hline
+            A & B & C & D & E & F & G & H & I & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\ \hline
+            47 & 48 & 49 & 50 & 26 & 27 & 28 & 29 & 30 & 31 & 32 & 33 & 34 & 35 & 36 & 37 & 38 & 39 & 40 & 41 & 42 & 43 & 44 & 45 & 46 \\ \hline
+        \end{tabular}
+    \end{center}
+    Finally, completing the sentence: \textcolor{green}{I}-\textcolor{red}{M}-\textcolor{green}{A}-\textcolor{red}{G}-\textcolor{magenta}{I}-\textcolor{red}{N}-\textcolor{green}{A}-\textcolor{red}{T}-\textcolor{red}{I}-\textcolor{green}{O}-\textcolor{magenta}{N} \textcolor{red}{I}-\textcolor{blue}{S} \textcolor{blue}{E}-\textcolor{orange}{V}-\textcolor{magenta}{E}-\textcolor{blue}{R}-\textcolor{orange}{Y}-\textcolor{red}{T}-\textcolor{green}{H}-\textcolor{green}{I}-\textcolor{magenta}{N}-\textcolor{red}{G} \textcolor{red}{I}-\textcolor{blue}{T} \textcolor{green}{I}-\textcolor{blue}{S} \textcolor{red}{T}-\textcolor{orange}{H}-\textcolor{magenta}{E} \textcolor{orange}{P}-\textcolor{red}{R}-\textcolor{red}{E}-\textcolor{red}{V}-\textcolor{magenta}{I}-\textcolor{red}{E}-\textcolor{orange}{W} \textcolor{magenta}{O}-\textcolor{orange}{F} \textcolor{magenta}{L}-\textcolor{red}{I}-\textcolor{orange}{F}-\textcolor{magenta}{E}'\textcolor{red}{S} \textcolor{green}{C}-\textcolor{orange}{O}-\textcolor{magenta}{M}-\textcolor{red}{I}-\textcolor{red}{N}-\textcolor{blue}{G} \textcolor{red}{A}-\textcolor{orange}{T}-\textcolor{red}{T}-\textcolor{orange}{R}-\textcolor{green}{A}-\textcolor{red}{C}-\textcolor{red}{T}-\textcolor{green}{I}-\textcolor{magenta}{O}-\textcolor{red}{N}-\textcolor{orange}{S}.
+
+    Therefore, the plaintext is: \emph{Imagination is everything it is the preview of life's coming attraction}. Combining the above tables, we have the homophonic substitution table given by
+    \begin{center}\tiny\hspace*{-50pt}
+        \begin{tabular}{ccccccccccccccccccccccccc} \hline
+            A & B & C & D & E & F & G & H & I & K & L & M & N & O & P & Q & R & S & T & U & V & W & X & Y & Z \\ \hline
+            8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 & 21 & 22 & 23 & 24 & 25 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+            47 & 48 & 49 & 50 & 26 & 27 & 28 & 29 & 30 & 31 & 32 & 33 & 34 & 35 & 36 & 37 & 38 & 39 & 40 & 41 & 42 & 43 & 44 & 45 & 46 \\ \hline
+            51 & 52 & 53 & 54 & 55 & 56 & 57 & 58 & 59 & 60 & 61 & 62 & 63 & 64 & 65 & 66 & 67 & 68 & 69 & 70 & 71 & 72 & 73 & 74 & 75 \\ \hline
+            99 & 100 & 76 & 77 & 78 & 79 & 80 & 81 & 82 & 83 & 84 & 85 & 86 & 87 & 88 & 89 & 90 & 91 & 92 & 93 & 94 & 95 & 96 & 97 & 98 \\ \hline
+            119 & 120 & 121 & 122 & 123 & 124 & 125 & 101 & 102 & 103 & 104 & 105 & 106 & 107 & 108 & 109 & 110 & 111 & 112 & 113 & 114 & 115 & 116 & 117 & 118 \\ \hline
+        \end{tabular}
+    \end{center}
+    So the keyword is \emph{TEACH}.
+\end{solution}
+
+\end{document}

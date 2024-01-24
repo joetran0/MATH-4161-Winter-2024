@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts, amssymb, amsmath, amsthm, booktabs, hyperref, pgfplots, tikz, xcolor, multicol}
+
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{definition}\newtheorem{question}{Question}
+\theoremstyle{definition}\newtheorem*{solution}{Solution}
+
+\begin{document}
+
+\noindent \textbf{MATH 4161 Mathematics of Cryptography} \hfill \textbf{Assignment 7} \\
+\noindent \textsc{Assignment} \hfill \textsc{Joe Tran}
+
+\begin{question}
+    Given the beginning of the message \textsf{HOWCA NYO...} and this corresponds to the first 8 letters of the ciphertext:
+    \begin{center}
+        \textsf{RGHNY GDGCM OZSNC YUQQJ DZTYR AJKVV CRDCF BFRLF PJPDF IWAVA Y}
+    \end{center}
+    The ciphertext was encrypted by the Vernam two-tape system such the sum of the lengths of the two keys minus 1 is equal to 8. Determine the plaintext.
+\end{question}
+
+\begin{solution}
+    First, note that since the sum of the lengths of the two keys minus 1 is 8, so if $x$ represents the length of the first key and $y$ represents the length of the second key, then
+    \begin{center}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            $x$ & $y$ & $xy$ \\ \hline
+            1   & 8   & 8    \\ \hline
+            2   & 7   & 14   \\ \hline
+            3   & 6   & 18   \\ \hline
+            4   & 5   & 20   \\ \hline
+            \end{tabular}
+    \end{center}
+    So we see here that having length 4 and length 5 for the first and second key, respectively seems candidable.
+
+    Recall the values of of the letters given by the following table:
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+            \hline
+            A & 0 & F & 5 & K & 10 & P & 15 & U & 20 & Z & 25 \\ \hline
+            B & 1 & G & 6 & L & 11 & Q & 16 & V & 21 &   &    \\ \hline
+            C & 2 & H & 7 & M & 12 & R & 17 & W & 22 &   &    \\ \hline
+            D & 3 & I & 8 & N & 13 & S & 18 & X & 23 &   &    \\ \hline
+            E & 4 & J & 9 & O & 14 & T & 19 & Y & 24 &   &    \\ \hline
+        \end{tabular}
+    \end{center}
+    Let us consider the first 20 letters of the ciphertext. Let $x = (x_1, x_2, x_3, x_4)$ and $y = (y_1, y_2, y_3, y_4, y_5)$. Then
+    \begin{table}[h]
+        \centering
+        \resizebox{\textwidth}{!}{%
+        \begin{tabular}{|cccccccccccccccccccc|}
+        \hline
+        R     & G     & H     & N                          & \multicolumn{1}{c|}{Y}     & G     & D     & G                          & C     & \multicolumn{1}{c|}{M}     & O     & Z                          & S     & N     & \multicolumn{1}{c|}{C}     & Y                          & U     & Q     & Q     & J     \\ \hline
+        17    & 6     & 7     & 13                         & 24                         & 6     & 3     & 6                          & 2     & 12                         & 14    & 25                         & 18    & 13    & 2                          & 24                         & 20    & 16    & 16    & 9     \\ \hline
+        $x_1$ & $x_2$ & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$                      & $x_2$ & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$                      & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$ & $x_3$                      & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$ & $x_3$ & $x_4$ \\ \hline
+              &       &       & \multicolumn{1}{c|}{}      &                            &       &       & \multicolumn{1}{c|}{}      &       &                            &       & \multicolumn{1}{c|}{}      &       &       &                            & \multicolumn{1}{c|}{}      &       &       &       &       \\ \hline
+        $y_1$ & $y_2$ & $y_3$ & $y_4$                      & \multicolumn{1}{c|}{$y_5$} & $y_1$ & $y_2$ & $y_3$                      & $y_4$ & \multicolumn{1}{c|}{$y_5$} & $y_1$ & $y_2$                      & $y_3$ & $y_4$ & \multicolumn{1}{c|}{$y_5$} & $y_1$                      & $y_2$ & $y_3$ & $y_4$ & $y_5$ \\ \hline
+              &       &       &                            & \multicolumn{1}{c|}{}      &       &       &                            &       & \multicolumn{1}{c|}{}      &       &                            &       &       & \multicolumn{1}{c|}{}      &                            &       &       &       &       \\ \hline
+        7     & 14    & 22    & 2                          & \multicolumn{1}{c|}{0}     & 13    & 24    & \multicolumn{1}{c|}{14}    &       &                            &       &                            &       &       &                            &                            &       &       &       &       \\ \cline{1-8}
+        H     & O     & W     & C                          & \multicolumn{1}{c|}{A}     & N     & Y     & \multicolumn{1}{c|}{O}     &       &                            &       &                            &       &       &                            &                            &       &       &       &       \\ \hline
+        \end{tabular}%
+        }
+    \end{table}
+    
+    Without loss of generality, let us assume that $x_1 = 0$. Then the table above becomes
+    \begin{center}
+        \begin{tabular}{|cccccccccccccccccccc|}
+            \hline
+            R     & G     & H     & N                          & \multicolumn{1}{c|}{Y}     & G     & D     & G                          & C     & \multicolumn{1}{c|}{M}     & O     & Z                          & S     & N     & \multicolumn{1}{c|}{C}     & Y                          & U     & Q     & Q     & J     \\ \hline
+            17    & 6     & 7     & 13                         & 24                         & 6     & 3     & 6                          & 2     & 12                         & 14    & 25                         & 18    & 13    & 2                          & 24                         & 20    & 16    & 16    & 9     \\ \hline
+            $x_1$ & $x_2$ & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$                      & $x_2$ & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$                      & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$ & $x_3$                      & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$ & $x_3$ & $x_4$ \\ \hline
+            0     &       &       & \multicolumn{1}{c|}{}      & 0                          &       &       & \multicolumn{1}{c|}{}      & 0     &                            &       & \multicolumn{1}{c|}{}      & 0     &       &                            & \multicolumn{1}{c|}{}      & 0     &       &       &       \\ \hline
+            $y_1$ & $y_2$ & $y_3$ & $y_4$                      & \multicolumn{1}{c|}{$y_5$} & $y_1$ & $y_2$ & $y_3$                      & $y_4$ & \multicolumn{1}{c|}{$y_5$} & $y_1$ & $y_2$                      & $y_3$ & $y_4$ & \multicolumn{1}{c|}{$y_5$} & $y_1$                      & $y_2$ & $y_3$ & $y_4$ & $y_5$ \\ \hline
+                  &       &       &                            & \multicolumn{1}{c|}{}      &       &       &                            &       & \multicolumn{1}{c|}{}      &       &                            &       &       & \multicolumn{1}{c|}{}      &                            &       &       &       &       \\ \hline
+            7     & 14    & 22    & 2                          & \multicolumn{1}{c|}{0}     & 13    & 24    & \multicolumn{1}{c|}{14}    &       &                            &       &                            &       &       &                            &                            &       &       &       &       \\ \cline{1-8}
+            H     & O     & W     & C                          & \multicolumn{1}{c|}{A}     & N     & Y     & \multicolumn{1}{c|}{O}     &       &                            &       &                            &       &       &                            &                            &       &       &       &       \\ \hline
+            \end{tabular}
+        \end{center}
+
+    To find the other values in the table, we need to use the formula:
+    \begin{equation*}
+        \text{plaintext number} + x_i + y_j = \text{ciphertext number} \bmod {26} \tag{*}
+    \end{equation*}
+    For example, if we want to find $y_1$, since the plaintext number of H is 7, $x_1$ is 0, and ciphertext number of R is 17, then
+    \begin{align*}
+        7 + 0 + y_1 &= 17 \bmod {26} \\
+        y_1 &= 10 \bmod {26} \\
+        y_1 &= 10
+    \end{align*}
+    and so every $y_1$ in the above table is now 10. So
+    \begin{center}
+        \begin{tabular}{|cccccccccccccccccccc|}
+            \hline
+            R     & G     & H     & N                          & \multicolumn{1}{c|}{Y}     & G     & D     & G                          & C     & \multicolumn{1}{c|}{M}     & O     & Z                          & S     & N     & \multicolumn{1}{c|}{C}     & Y                          & U     & Q     & Q     & J     \\ \hline
+            17    & 6     & 7     & 13                         & 24                         & 6     & 3     & 6                          & 2     & 12                         & 14    & 25                         & 18    & 13    & 2                          & 24                         & 20    & 16    & 16    & 9     \\ \hline
+            $x_1$ & $x_2$ & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$                      & $x_2$ & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$                      & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$ & $x_3$                      & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$ & $x_3$ & $x_4$ \\ \hline
+            0     &       &       & \multicolumn{1}{c|}{}      & 0                          &       &       & \multicolumn{1}{c|}{}      & 0     &                            &       & \multicolumn{1}{c|}{}      & 0     &       &                            & \multicolumn{1}{c|}{}      & 0     &       &       &       \\ \hline
+            $y_1$ & $y_2$ & $y_3$ & $y_4$                      & \multicolumn{1}{c|}{$y_5$} & $y_1$ & $y_2$ & $y_3$                      & $y_4$ & \multicolumn{1}{c|}{$y_5$} & $y_1$ & $y_2$                      & $y_3$ & $y_4$ & \multicolumn{1}{c|}{$y_5$} & $y_1$                      & $y_2$ & $y_3$ & $y_4$ & $y_5$ \\ \hline
+            10    &       &       &                            & \multicolumn{1}{c|}{}      & 10    &       &                            &       & \multicolumn{1}{c|}{}      & 10    &                            &       &       & \multicolumn{1}{c|}{}      & 10                         &       &       &       &       \\ \hline
+            7     & 14    & 22    & 2                          & \multicolumn{1}{c|}{0}     & 13    & 24    & \multicolumn{1}{c|}{14}    &       &                            &       &                            &       &       &                            &                            &       &       &       &       \\ \cline{1-8}
+            H     & O     & W     & C                          & \multicolumn{1}{c|}{A}     & N     & Y     & \multicolumn{1}{c|}{O}     &       &                            &       &                            &       &       &                            &                            &       &       &       &       \\ \hline
+            \end{tabular}
+        \end{center}
+    
+        Now let us have a look for $x_2$ on the 6th position. Since the plaintext number is 13, $y_1 = 10$, and ciphertext number is 6, and so
+        \begin{align*}
+            13 + x_2 + 10 &= 6 \bmod {26} \\
+            x_2 &= -17 \bmod {26} \\
+            x_2 &= 9
+        \end{align*}
+        and therefore, updating the table gives us
+        \begin{center}
+            \begin{tabular}{|cccccccccccccccccccc|}
+                \hline
+                R     & G     & H     & N                          & \multicolumn{1}{c|}{Y}     & G     & D     & G                          & C     & \multicolumn{1}{c|}{M}     & O     & Z                          & S     & N     & \multicolumn{1}{c|}{C}     & Y                          & U     & Q     & Q     & J     \\ \hline
+                17    & 6     & 7     & 13                         & 24                         & 6     & 3     & 6                          & 2     & 12                         & 14    & 25                         & 18    & 13    & 2                          & 24                         & 20    & 16    & 16    & 9     \\ \hline
+                $x_1$ & $x_2$ & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$                      & $x_2$ & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$                      & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$ & $x_3$                      & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$ & $x_3$ & $x_4$ \\ \hline
+                0     & 9     &       & \multicolumn{1}{c|}{}      & 0                          & 9     &       & \multicolumn{1}{c|}{}      & 0     & 9                          &       & \multicolumn{1}{c|}{}      & 0     & 9     &                            & \multicolumn{1}{c|}{}      & 0     & 9     &       &       \\ \hline
+                $y_1$ & $y_2$ & $y_3$ & $y_4$                      & \multicolumn{1}{c|}{$y_5$} & $y_1$ & $y_2$ & $y_3$                      & $y_4$ & \multicolumn{1}{c|}{$y_5$} & $y_1$ & $y_2$                      & $y_3$ & $y_4$ & \multicolumn{1}{c|}{$y_5$} & $y_1$                      & $y_2$ & $y_3$ & $y_4$ & $y_5$ \\ \hline
+                10    &       &       &                            & \multicolumn{1}{c|}{}      & 10    &       &                            &       & \multicolumn{1}{c|}{}      & 10    &                            &       &       & \multicolumn{1}{c|}{}      & 10                         &       &       &       &       \\ \hline
+                7     & 14    & 22    & 2                          & \multicolumn{1}{c|}{0}     & 13    & 24    & \multicolumn{1}{c|}{14}    &       &                            &       &                            &       &       &                            &                            &       &       &       &       \\ \cline{1-8}
+                H     & O     & W     & C                          & \multicolumn{1}{c|}{A}     & N     & Y     & \multicolumn{1}{c|}{O}     &       &                            &       &                            &       &       &                            &                            &       &       &       &       \\ \hline
+                \end{tabular}
+        \end{center}
+
+        Now let us have a look at $y_2$ on the 2nd position. Since the plaintext number is 14, $x_1 = 9$ and the ciphertext number is 6, then
+        \begin{align*}
+            14 + 9 + y_2 &= 6 \bmod {26}\\
+            y_2 &= 9
+        \end{align*}
+        So updating the table,
+        \begin{center}
+            \begin{tabular}{|cccccccccccccccccccc|}
+                \hline
+                R     & G     & H     & N                          & \multicolumn{1}{c|}{Y}     & G     & D     & G                          & C     & \multicolumn{1}{c|}{M}     & O     & Z                          & S     & N     & \multicolumn{1}{c|}{C}     & Y                          & U     & Q     & Q     & J     \\ \hline
+                17    & 6     & 7     & 13                         & 24                         & 6     & 3     & 6                          & 2     & 12                         & 14    & 25                         & 18    & 13    & 2                          & 24                         & 20    & 16    & 16    & 9     \\ \hline
+                $x_1$ & $x_2$ & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$                      & $x_2$ & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$                      & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$ & $x_3$                      & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$ & $x_3$ & $x_4$ \\ \hline
+                0     & 9     &       & \multicolumn{1}{c|}{}      & 0                          & 9     &       & \multicolumn{1}{c|}{}      & 0     & 9                          &       & \multicolumn{1}{c|}{}      & 0     & 9     &                            & \multicolumn{1}{c|}{}      & 0     & 9     &       &       \\ \hline
+                $y_1$ & $y_2$ & $y_3$ & $y_4$                      & \multicolumn{1}{c|}{$y_5$} & $y_1$ & $y_2$ & $y_3$                      & $y_4$ & \multicolumn{1}{c|}{$y_5$} & $y_1$ & $y_2$                      & $y_3$ & $y_4$ & \multicolumn{1}{c|}{$y_5$} & $y_1$                      & $y_2$ & $y_3$ & $y_4$ & $y_5$ \\ \hline
+                10    & 9     &       &                            & \multicolumn{1}{c|}{}      & 10    & 9     &                            &       & \multicolumn{1}{c|}{}      & 10    & 9                          &       &       & \multicolumn{1}{c|}{}      & 10                         & 9     &       &       &       \\ \hline
+                7     & 14    & 22    & 2                          & \multicolumn{1}{c|}{0}     & 13    & 24    & \multicolumn{1}{c|}{14}    &       &                            &       &                            &       &       &                            &                            &       &       &       &       \\ \cline{1-8}
+                H     & O     & W     & C                          & \multicolumn{1}{c|}{A}     & N     & Y     & \multicolumn{1}{c|}{O}     &       &                            &       &                            &       &       &                            &                            &       &       &       &       \\ \hline
+                \end{tabular}
+            \end{center}
+
+        Then by repeating the same process until we fill all of the numbers, 
+        \begin{center}
+            \begin{tabular}{|cccccccccccccccccccc|}
+                \hline
+                R     & G     & H     & N                          & \multicolumn{1}{c|}{Y}     & G     & D     & G                          & C     & \multicolumn{1}{c|}{M}     & O     & Z                          & S     & N     & \multicolumn{1}{c|}{C}     & Y                          & U     & Q     & Q     & J     \\ \hline
+                17    & 6     & 7     & 13                         & 24                         & 6     & 3     & 6                          & 2     & 12                         & 14    & 25                         & 18    & 13    & 2                          & 24                         & 20    & 16    & 16    & 9     \\ \hline
+                $x_1$ & $x_2$ & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$                      & $x_2$ & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$                      & $x_3$ & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$ & $x_3$                      & \multicolumn{1}{c|}{$x_4$} & $x_1$ & $x_2$ & $x_3$ & $x_4$ \\ \hline
+                0     & 9     & 22    & \multicolumn{1}{c|}{3}     & 0                          & 9     & 22    & \multicolumn{1}{c|}{3}     & 0     & 9                          & 22    & \multicolumn{1}{c|}{3}     & 0     & 9     & 22                         & \multicolumn{1}{c|}{3}     & 0     & 9     & 22    & 3     \\ \hline
+                $y_1$ & $y_2$ & $y_3$ & $y_4$                      & \multicolumn{1}{c|}{$y_5$} & $y_1$ & $y_2$ & $y_3$                      & $y_4$ & \multicolumn{1}{c|}{$y_5$} & $y_1$ & $y_2$                      & $y_3$ & $y_4$ & \multicolumn{1}{c|}{$y_5$} & $y_1$                      & $y_2$ & $y_3$ & $y_4$ & $y_5$ \\ \hline
+                10    & 9     & 15    & 8                          & \multicolumn{1}{c|}{24}    & 10    & 9     & 15                         & 8     & \multicolumn{1}{c|}{24}    & 10    & 9                          & 15    & 8     & \multicolumn{1}{c|}{24}    & 10                         & 9     & 15    & 8     & 24    \\ \hline
+                7     & 14    & 22    & 2                          & \multicolumn{1}{c|}{0}     & 13    & 24    & \multicolumn{1}{c|}{14}    &       &                            &       &                            &       &       &                            &                            &       &       &       &       \\ \cline{1-8}
+                H     & O     & W     & C                          & \multicolumn{1}{c|}{A}     & N     & Y     & \multicolumn{1}{c|}{O}     &       &                            &       &                            &       &       &                            &                            &       &       &       &       \\ \hline
+                \end{tabular}
+            \end{center}
+    And thus, $x = (0, 9, 22, 3)$ and $y = (10, 9, 15, 8, 24)$ are our keys.
+
+    Now using (*), our goal is to find the plaintext from the ciphertext, so for the remainder of the assignment, we need to compute all
+    \begin{equation*}
+        \text{plaintext number} = \text{ciphertext number} - x_i - y_i \bmod {26}
+    \end{equation*}
+    For example, for the 9th position's letter, we have ciphertext number 2, $x_1 = 0$ and $y_4 = 8$. So then
+    \begin{equation*}
+        \text{plaintext number} = 2 - 0 - 8 = -6 \bmod {26} = 20
+    \end{equation*}
+    and 20 in the plaintext corresponds to U.
+
+    Similarly, for the 10th position's letter, we have ciphertext number 12, $x_2 = 9$ and $y_5 = 24$, so
+    \begin{equation*}
+        \text{plaintext number} = 12 - 9 - 24 = -21 \bmod {26} = 5
+    \end{equation*}
+    and 5 in the plaintext corresponds to F.
+
+    By doing the same for the remaining of the letters, we should be able to obtain the plaintext:
+    \begin{center}
+        \textsf{How can you find Will Smith in the snow following the fresh prints}
+    \end{center}
+\end{solution}
+
+\end{document}

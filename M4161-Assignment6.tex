@@ -1,0 +1,137 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts, amssymb, amsmath, amsthm, booktabs, hyperref, pgfplots, tikz, xcolor}
+
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{definition}\newtheorem{question}{Question}
+\theoremstyle{definition}\newtheorem*{solution}{Solution}
+
+\date{January 9, 2024}
+
+\setlength{\parskip}{5pt}
+
+\begin{document}
+
+\noindent \textbf{MATH 4161 Mathematics of Cryptography} \hfill \textbf{Assignment 6} \\
+\noindent \textsc{Assignment} \hfill \textsc{Joe Tran}
+
+\begin{question}
+    Given the ciphertext: VVFGV VFDGG VGFAF AGVXF GVAVD DFGGA AFVFF DGXAV GFVXD XXVFG DDFDG DGFXG AGDVV FDGDA DFVDV VDAVD AGDVD XDDVA FFDFV XDVFG DFAFA XFDFV DFXVD VDFGA AFFFF VVVFX FXDFD FFXFV FVVFG FFFFX XXVDD FVAXD FXFAF AADAX FFAAA DVXAF and the first key given by
+    \begin{center}
+        $k_1$ : \begin{tabular}{|c|c|c|c|c|c|} \hline
+            W & K & D & J & 8 & T \\ \hline
+            Y & 0 & E & 2 & I & Q \\ \hline
+            C & S & Z & 6 & N & P \\ \hline
+            1 & V & R & U & L & B \\ \hline
+            4 & A & O & 3 & F & G \\ \hline
+            H & 9 & M & 7 & 5 & X \\ \hline
+        \end{tabular}
+    \end{center}
+    and given that the second key is of length 6, and provided that the clue that in the plaintext, it contains ths following sequence of letters: CHEDEACHOT. Find the plaintext and the second key.
+\end{question}
+
+\begin{solution}
+    Since my key is of length 6, then there are six columns. Furthermore, the total letters of the ciphertext is 180. Therefore,
+    \begin{equation*}
+        rows = \frac{\text{letters in ciphertext}}{\text{length of second key}} = \frac{180}{6} = 30
+    \end{equation*}
+    Now we need to create a rectangle where we have 30 rows by 6 columns: 
+    \begin{itemize}
+        \item V V F G V V F D G G V G F A F A G V X F G V A V D D F G G A 
+        \item A F V F F D G X A V G F V X D X X V F G D D F D G D G F X G 
+        \item A G D V V F D G D A D F V D V V D A V D A G D V D X D D V A 
+        \item F F D F V X D V F G D F A F A X F D F V D F X V D V D F G A 
+        \item A F F F F V V V F X F X D F D F F X F V F V V F G F F F F X 
+        \item X X V D D F V A X D F X F A F A A D A X F F A A A D V X A F
+    \end{itemize}
+    So in a table format
+
+    \begin{center}
+        \begin{tabular}{cccccc}
+            1 & 2 & 3 & 4 & 5 & 6 \\ \hline
+            V & A & A & F & A & X \\
+            V & F & G & F & F & X \\
+            F & V & D & D & F & V \\
+            G & F & V & F & F & D \\
+            V & F & V & V & F & D \\
+            V & D & F & X & V & F \\
+            F & G & D & D & V & V \\
+            D & X & G & V & V & A \\
+            G & V & A & G & X & D \\
+            V & G & D & D & F & F \\
+            G & F & F & F & X & X \\
+            F & V & V & A & D & F \\
+            A & X & D & F & F & A \\
+            F & D & V & A & D & F \\
+            A & X & V & X & F & A \\
+            G & X & D & F & F & A \\
+            V & V & A & D & X & D \\
+            X & F & V & F & F & A \\
+            F & G & D & V & V & X \\
+            G & D & A & D & F & F \\
+            V & D & G & F & V & F \\
+            A & F & D & X & V & A \\
+            V & D & V & V & F & A \\
+            D & G & D & D & G & A \\
+            D & D & X & V & F & D \\
+            F & G & D & D & F & V \\
+            G & F & D & F & F & X \\
+            G & X & V & G & F & A \\
+            A & G & A & A & X & F \\
+        \end{tabular}
+    \end{center}
+
+    Modifying $k_1$,
+    \begin{center}
+        $k_1$ : \begin{tabular}{c|cccccc}
+            & A & D & F & G & V & X \\ \hline
+            A & W & K & D & J & 8 & T \\
+            D & Y & 0 & E & 2 & I & Q \\
+            F & C & S & Z & 6 & N & P \\
+            G & 1 & V & R & U & L & B \\
+            V & 4 & A & O & 3 & F & G \\
+            X & H & 9 & M & 7 & 5 & X \\
+        \end{tabular}
+    \end{center}
+
+    Then, using the clue CHEDEACHOT and after trial and error, we have the result table given as
+    \begin{center}
+        \begin{tabular}{cccccc}
+            2 & 6 & 3 & 5 & 1 & 4 \\ \hline
+            A & X & A & A & V & F \\
+            F & X & G & F & V & F \\
+            V & V & D & F & F & D \\
+            F & D & V & F & G & F \\
+            F & D & V & F & V & V \\
+            D & F & F & V & V & X \\
+            G & V & D & V & F & D \\
+            X & A & G & V & D & V \\
+            A & X & D & F & G & F \\
+            V & D & A & X & G & G \\
+            G & F & D & F & V & D \\
+            F & X & F & X & G & F \\
+            V & F & V & D & F & A \\
+            X & A & D & F & A & F \\
+            D & F & V & D & F & A \\
+            X & A & V & F & A & X \\
+            X & A & D & F & G & F \\
+            V & D & A & X & V & D \\
+            F & A & V & D & X & F \\
+            G & X & D & V & F & V \\
+            D & F & A & F & G & D \\
+            D & F & G & V & V & F \\
+            F & A & D & V & A & X \\
+            D & A & V & F & V & V \\
+            G & A & D & G & D & D \\
+            D & D & X & F & D & V \\
+            G & V & D & F & F & D \\
+            F & X & D & F & G & F \\
+            X & A & V & F & G & G \\
+            G & F & A & X & A & A
+        \end{tabular}
+    \end{center}
+    and so, taking each two letters and combining to make it into a letter/number, we obtain the plaintext: \emph{Two professors of English literature approached each other at a combined velocity of 1200 miles per hour} (with extra letters TW), and the second key is 263514.
+\end{solution}
+
+\end{document}
