@@ -1,0 +1,155 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts, amssymb, amsmath, amsthm, booktabs, hyperref, pgfplots, tikz, xcolor, mathrsfs}
+
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{definition}\newtheorem{question}{Question}
+\theoremstyle{definition}\newtheorem*{solution}{Solution}
+\theoremstyle{definition}\newtheorem{example}{Example}
+\theoremstyle{definition}\newtheorem{notation}{Notation}
+\theoremstyle{theorem}\newtheorem{theorem}{Theorem}
+\theoremstyle{theorem}\newtheorem{corollary}{Corollary}
+\theoremstyle{theorem}\newtheorem{lemma}{Lemma}
+\theoremstyle{theorem}\newtheorem{proposition}{Proposition}
+
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\renewcommand{\d}{\delta}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\e}{\varepsilon}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\renewcommand{\H}{\mathbb{H}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\J}{\mathcal{J}}
+\newcommand{\K}{\mathbb{K}}
+\renewcommand{\L}{\mathscr{L}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathbb{N}}
+\renewcommand{\O}{\mathcal{O}}
+\renewcommand{\P}{\mathcal{P}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\begin{document}
+
+\noindent \textbf{MATH 4161 Mathematics of Cryptography} \hfill \textbf{Lecture 6} \\
+\textsc{Lecture} \hfill \textsc{Joe Tran}
+
+\section{About Assignments and About Test}
+
+\begin{itemize}
+    \item Assignments 1-7 by Saturday $\Rightarrow$ Extra Vernam
+    \item Assignments 1-8 by Tuesday $\Rightarrow$ Extra Hill
+\end{itemize}
+
+Practice test posted on eClass, and the test is on February 1 \textcolor{red}{(Only on Probability Theory, and nothing on Ciphersystems)}
+
+\section{Kerchov's Principles}
+
+1883 Auguste Kerchov in \emph{La Cryptographie Militaire}, six design principles for military ciphers.
+\begin{enumerate}
+    \item The system must be practically, if not mathematically, indecipherable.
+    \item It must not be required to be secret, and it must be able to fall into the hands of the enemy without inconvenience.
+    \item Its key must be communicable and retainable without the help of written notes, and changeable or modifiable at the will of the correspondents.
+    \item It must be applicable to telegraphic correspondence
+    \item It must be portable, and its usage and function must not require the concourse of several people.
+    \item Finally, it is necessary, given the circumstances that command its application, that the system be easy to use, requiring neither mental strain nor the knowledge of a long series of rules to observe.
+\end{enumerate}
+
+\section{Probability Vocabulary}
+
+\begin{definition}[Experiment, Random Variables]
+    This refers to an activity, not necessarily scientific, which involves the production of data some of which are ``random''. We denote an experiment by $\E$ and the data by $X, Y, Z,...$. The latter are usually referred to as the \emph{random Variables}, associated with $\E$.
+\end{definition}
+
+\begin{definition}[Random, Sample Space, Probabilities]
+    We use the word \emph{random} whenever $X, Y, Z,...$ we are studying are produced by such an intricate mechanism that all we know about them is
+    \begin{enumerate}
+        \item The range of possible values that $X, Y, Z,...$ may take. This range is usually referred to as the \emph{sample space} and is denoted by $\Omega$.
+        \item Certain positive numbers are called \emph{probabilities} which numerically express our ``confidence'' that $X, Y, Z,...$ fall in chosen subsets of the sample space $\Omega$.
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}[Elementary Outcome, Sample Point]
+    An individual outcome of the experiment $\E$ is usually referred to as an \emph{elementary outcome} or \emph{sample point}. Mathematically this is just an element of the sample space $\Omega$.
+\end{definition}
+
+\begin{definition}[Event]
+    Mathematically an \emph{event} is just a subset of $\Omega$. We say that $\E$ ``resulted in the event $A$'' or that ``$A$ has occurred'' if the outcome falls in the subset $A$.
+\end{definition}
+
+\begin{definition}[Field of Events]
+    The collection of events associated with our experiment $\E$ is usually denoted by $\FF$. In other words, $\FF$ denotes the collection of subsets of the sample space $\Omega$ that are of special interest in our study. For mathematical reasons, $\FF$ is assumed to be closed under the set operations of intersection, union, and complementation. Two subsets $\emptyset$ and $\Omega$ are always included in $\FF$.
+\end{definition}
+
+\begin{definition}[Probability Measure]
+    Our experiment $\E$ associates to each event $A$ of $\FF$ a number $P(A)$ in the interval $[0, 1]$ which reflects our confidence that the outcome falls in $A$. We refer to $P(A)$ as the probability of $A$. Note that we should have $P(\Omega) = 1$ and that if $A$ and $B$ are mutually exclusive events, then
+    \begin{equation*}
+        P(A \cup B) = P(A) + P(B)
+    \end{equation*}
+    A set function with these properties is usually referred to as a \emph{probability measure}.
+\end{definition}
+
+\begin{definition}[Expectation of a Random Variable]
+    Any function of the measure of our experiment can be referred to as a \emph{random variable}. Mathematically, a random variable is simply a function of the sample space. If the events $A_1, A_2,..., A_n$ are mutually exclusive and decompose $\Omega$, and the random variable $X$ takes the value $x_i$ when $A_i$ occurs, then the expression
+    \begin{equation*}
+        \EE[X] = \sum_{i = 1}^{n} x_i P(A_i)
+    \end{equation*}
+    is referred to as the \emph{expectation of $X$}. If we repeat $\E$ a very large number of times, and average out the successive values of $X$ we get, then we should expect the resulting average to be close to $\EE[X]$.
+\end{definition}
+
+\begin{definition}[Conditional Probability]
+    If $A$ and $B$ are events and the ratio
+    \begin{equation*}
+        P(A \mid B) = \frac{P(A \cap B)}{P(B)}
+    \end{equation*}
+    is usually referred to as the \emph{conditional probability of $A$ given $B$}. The concept arises as follows. Given the event $B$ we can construct a new experiment $\E_B$ by carrying out $\E$ and recording its outcome only when it falls in $B$. We can argue that the probability of $A$ under $\E_B$ will is $P(A \mid B)$ where $P(A \cap B)$ and $P(B)$ are the probabilities of $A \cap B$ and $B$ under $\E$. We shall refer to $\E_B$ as $\E$ crippled by $B$.
+\end{definition}
+
+\begin{definition}[Conditional Expectation of a Random Variable]
+    Given an event $B$, if we carry out the crippled experiment $\E_B$ instead of $\E$, then all the probabilities change and so do all expectations. If $X$ is a random variable and the events $A_1, A_2,..., A_n$ decompose $\Omega$ as before then
+    \begin{equation*}
+        \EE[X \mid B] = \sum_{i = 1}^{n} x_i P(A_i \mid B)
+    \end{equation*}
+    gives the expected value of $X$ under $\E_B$. We refer to it as the \emph{conditional expectation of $X$ given $B$}.
+\end{definition}
+
+\begin{definition}[Dependence]
+    The random variable $Y$ is said to be \emph{dependent} upon the random variable $X$ if and only if $Y$ is a function of $X$. Similarly, we say that $Y$ is dependent upon $X_1, X_2,..., X_n$ if for some $f(X_1, X_2,..., X_n)$ we have
+    \begin{equation*}
+        Y = f(X_1, X_2,..., X_n)
+    \end{equation*}
+\end{definition}
+
+\begin{definition}[Independence]
+    In probability theory, ``independence'' is not the negation of ``dependence''. We say that $Y$ is independent of $X$ if and only if knowing the value of $X$ does not change the uncertainty of $Y$. More precisely, if we cripple our experiment $\E$ by any events $X = a$, the probabilities of all events $Y = b$ do not change. Mathematically this is translated in the conditions that for all choices $a$ and $b$,
+    \begin{equation*}
+        P(Y = b \mid X = a) = P(Y = b)
+    \end{equation*}
+    which also means that
+    \begin{equation*}
+        P(Y = b \cap X = a) = P(X = a) P(Y = b)
+    \end{equation*}
+\end{definition}
+
+\section{Conditional Probability}
+
+\section{Dependence and Independence}
+
+\end{document}
