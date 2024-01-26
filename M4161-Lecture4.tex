@@ -1,0 +1,75 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts, amssymb, amsmath, amsthm, booktabs, hyperref, pgfplots, tikz, xcolor}
+
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{definition}\newtheorem{example}{Example}
+\theoremstyle{definition}\newtheorem{samplecode}{Sample Code}
+
+\begin{document}
+
+\noindent \textbf{MATH 4161 Mathematics of Cryptography} \hfill \textbf{Lecture 4} \\
+\noindent \textsc{Lecture} \hfill \textsc{Joe Tran}
+
+\section{ADFGVX}
+
+The ADFGVX system was first used in the battlefield March 5, 1918. It was broken June 1 by Georges Painvin. We have two keys in this situation: $k_1$ a $6 \times 6$ square, and $k_2$ a permutation of $n$, where $n$ is even. For example,
+\begin{center}
+    \begin{tabular}{c|cccccc}
+        & A & D & F & G & V & X \\ \hline
+        A & C & O & 8 & X & F & 4 \\
+        D & M & K & 3 & A & Z & 9 \\
+        F & N & W & L & 0 & J & D \\
+        G & 5 & S & I & Y & H & U \\
+        V & P & 1 & V & B & 6 & R \\
+        X & E & Q & 7 & T & 2 & G \\
+    \end{tabular}
+\end{center}
+
+Then if the second key is given by the permutation:
+\begin{center}
+    4 9 5 15 2 8 16 12 13 17 1 18 3 19 10 7 6 11 14 20
+\end{center}
+
+So then our table is given as follows:
+\begin{center}
+    \begin{tabular}{|cc|cc|cc|cc|cc|cc|cc|cc|cc|cc|} \hline
+        4 & 9 & 5 & 15 & 2 & 8 & 16 & 12 & 13 & 17 & 1 & 18 & 3 & 19 & 10 & 7 & 6 & 11 & 14 & 20 \\ \hline\hline
+        \multicolumn{1}{|c|}{G} & V & \multicolumn{1}{c|}{X} & D & \multicolumn{1}{c|}{Y} & X & \multicolumn{1}{c|}{X} & A & \multicolumn{1}{c|}{X} & D & \multicolumn{1}{c|}{G} & X & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  \\ \hline
+        \multicolumn{2}{|c|}{H}   & \multicolumn{2}{c|}{Q}   & \multicolumn{2}{c|}{R}   & \multicolumn{2}{c|}{E}   & \multicolumn{2}{c|}{Q}   & \multicolumn{2}{c|}{U}   & \multicolumn{2}{c|}{E}   & \multicolumn{2}{c|}{S}   & \multicolumn{2}{c|}{T}   & \multicolumn{2}{c|}{S}   \\ \hline
+        \multicolumn{1}{|c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{A} & D & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{F} & F & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  \\ \hline
+        \multicolumn{2}{|c|}{F}   & \multicolumn{2}{c|}{R}   & \multicolumn{2}{c|}{O}   & \multicolumn{2}{c|}{N}   & \multicolumn{2}{c|}{T}   & \multicolumn{2}{c|}{L}   & \multicolumn{2}{c|}{I}   & \multicolumn{2}{c|}{N}   & \multicolumn{2}{c|}{E}   & \multicolumn{2}{c|}{S}   \\ \hline
+        \multicolumn{1}{|c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{G} & X & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{G} & F & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  \\ \hline
+        \multicolumn{2}{|c|}{I}   & \multicolumn{2}{c|}{T}   & \multicolumn{2}{c|}{U}   & \multicolumn{2}{c|}{A}   & \multicolumn{2}{c|}{T}   & \multicolumn{2}{c|}{I}   & \multicolumn{2}{c|}{O}   & \multicolumn{2}{c|}{N}   & \multicolumn{2}{c|}{B}   & \multicolumn{2}{c|}{Y}   \\ \hline
+        \multicolumn{1}{|c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{F} & F & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{V} & X & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  \\ \hline
+        \multicolumn{2}{|c|}{T}   & \multicolumn{2}{c|}{E}   & \multicolumn{2}{c|}{L}   & \multicolumn{2}{c|}{E}   & \multicolumn{2}{c|}{G}   & \multicolumn{2}{c|}{R}   & \multicolumn{2}{c|}{A}   & \multicolumn{2}{c|}{M}   & \multicolumn{2}{c|}{H}   & \multicolumn{2}{c|}{Q}   \\ \hline
+        \multicolumn{1}{|c|}{X} & F & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{G} & N & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{V} & X & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  & \multicolumn{1}{c|}{} &  \\ \hline
+        \multicolumn{2}{|c|}{7}   & \multicolumn{2}{c|}{T}   & \multicolumn{2}{c|}{H}   & \multicolumn{2}{c|}{C}   & \multicolumn{2}{c|}{O}   & \multicolumn{2}{c|}{R}   & \multicolumn{2}{c|}{P}   & \multicolumn{2}{c|}{S}   & \multicolumn{2}{c|}{E}   & \multicolumn{2}{c|}{D}   \\ \hline
+        \end{tabular}
+\end{center}
+Up to this point, our ciphertext is GFGVV VAGFG.
+
+\section{The Snail Encryption System}
+
+Enter plaintext by following the snail:
+\begin{center}
+    \includegraphics[scale=0.5]{Lecture4-1.png}
+\end{center}
+The ciphertext is obtained by reading the diagonals. In this case, WREEI HMICA...
+
+\section{Vernam Two-Tape System}
+
+Given the following
+\begin{center}
+    a \begin{tabular}{|ccc|ccc|ccc|ccc|} \hline
+        6 & 13 & 20 & 6 & 13 & 20 & 6 & 13 & 20 & 6 & 13 & 20 \\ \hline
+    \end{tabular}
+
+    b \begin{tabular}{|cccc|cccc|cccc|} \hline
+        18 & 0 & 6 & 19 & 18 & 0 & 6 & 19 & 18 & 0 & 6 & 19 \\ \hline
+    \end{tabular}
+\end{center}
+
+
+\end{document}
