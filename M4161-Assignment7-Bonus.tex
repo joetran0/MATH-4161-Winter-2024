@@ -1,0 +1,93 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsfonts, amssymb, amsmath, amsthm, booktabs, hyperref, pgfplots, tikz, xcolor, mathrsfs}
+
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{definition}\newtheorem{question}{Question}
+\theoremstyle{definition}\newtheorem*{solution}{Solution}
+\theoremstyle{definition}\newtheorem{example}{Example}
+\theoremstyle{definition}\newtheorem{notation}{Notation}
+\theoremstyle{theorem}\newtheorem{theorem}{Theorem}
+\theoremstyle{theorem}\newtheorem{corollary}{Corollary}
+\theoremstyle{theorem}\newtheorem{lemma}{Lemma}
+\theoremstyle{theorem}\newtheorem{proposition}{Proposition}
+
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\renewcommand{\d}{\delta}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\e}{\varepsilon}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\renewcommand{\H}{\mathbb{H}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\J}{\mathcal{J}}
+\newcommand{\K}{\mathbb{K}}
+\renewcommand{\L}{\mathscr{L}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\N}{\mathbb{N}}
+\renewcommand{\O}{\mathcal{O}}
+\renewcommand{\P}{\mathcal{P}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\begin{document}
+
+\noindent \textbf{MATH 4161 Mathematics of Cryptography} \hfill \textbf{Assignment 7.5} \\
+\textsc{Bonus} \hfill \textsc{Joe Tran}
+
+\begin{question}
+    In the 7th assignment you were asked to decrypt a Vernam cipher. When working on the assignment you were required only to submit the plaintext which you were able to recover from the cyphertext. When I encrypted your plaintext I used two English words for the keys. What were those words?
+\end{question}
+
+\begin{solution}
+    Our plaintext was: \textsf{How can you find Will Smith in the snow follow the fresh prints}. Our first key that we have used to find the plaintext was $x = (0, 9, 22, 3)$ and the second key to find the plaintext was $y = (10, 9, 15, 8, 24)$. Corresponding each key to the letters, we have $x = (A, J, W, D)$ and $y = (K, J, P, I, Y)$. However, running through the alphabet cycle once for each letter,
+    \begin{center}
+        \begin{tabular}{|c|c|c|c||c|c|c|c|c|} \hline
+            0 & 9 & 22 & 3 & 10 & 9 & 15 & 8 & 24 \\ \hline\hline
+            A & J & W & D & K & J & P & I & Y \\ \hline
+            B & K & X & E & L & K & Q & J & Z \\ \hline
+            C & L & Y & F & M & L & R & K & A \\ \hline
+            D & M & Z & G & N & M & S & L & B \\ \hline
+            E & N & A & H & O & N & T & M & C \\ \hline
+            F & O & B & I & \textbf{P} & \textbf{O} & \textbf{U} & \textbf{N} & \textbf{D} \\ \hline
+            G & P & C & J & Q & P & V & O & E \\ \hline
+            H & Q & D & K & R & Q & W & P & F \\ \hline
+            I & R & E & L & S & R & X & Q & G \\ \hline
+            J & S & F & M & T & S & Y & R & H \\ \hline
+            K & T & G & N & U & T & Z & S & I \\ \hline
+            L & U & H & O & V & U & A & T & J \\ \hline
+            M & V & I & P & W & V & B & U & K \\ \hline
+            N & W & J & Q & X & W & C & V & L \\ \hline
+            O & X & K & R & Y & X & D & W & M \\ \hline
+            P & Y & L & S & Z & Y & E & X & N \\ \hline
+            Q & Z & M & T & A & Z & F & Y & O \\ \hline
+            R & A & N & U & B & A & G & Z & P \\ \hline
+            S & B & O & V & C & B & H & A & Q \\ \hline
+            T & C & P & W & D & C & I & B & R \\ \hline
+            U & D & Q & X & E & D & J & C & S \\ \hline
+            \textbf{V} & \textbf{E} & \textbf{R} & \textbf{Y} & F & E & K & D & T \\ \hline
+            W & F & S & Z & G & F & L & E & U \\ \hline
+            X & G & T & A & H & G & M & F & V \\ \hline
+            Y & H & U & B & I & H & N & G & W \\ \hline
+            Z & I & V & C & J & I & O & H & X \\ \hline
+        \end{tabular}
+    \end{center}
+    From the table above, we see that the two words \textbf{VERY} and \textbf{POUND} are used to encrypt the plaintext into plaintext.
+\end{solution}
+
+\end{document}
